@@ -1,36 +1,16 @@
-from rest_framework.renderers import JSONRenderer
+from rest_framework import status
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from .models import Image
+from .serializers import ImageSerializer
 
-from django.shortcuts import render
-from .forms import ImageForm
-
-from django.http import JsonResponse
-import json
-
-
-# def image_upload_view(request):
-#     if request.method == 'POST':
-#         form = ImageForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             form.save()
-            
-#             img_obj = form.instance
-#             return render(request, 'index.html', {'form': form, 'img_obj': img_obj})
-#     else:
-#         form = ImageForm()    
-#         return render(request, 'index.html', {'form': form})
-    
-def image_upload_view(request):
-    if request.method == 'POST':
-        form = ImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-
-            response_data = {'message': 'Hello, Image!'}
-            return JsonResponse(response_data)
-    else:
-        form = ImageForm()
-    return render(request, 'index.html', {'form': form})
+@api_view(['POST'])
+def upload_image(request):
+    serializer = ImageSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
  

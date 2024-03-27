@@ -15,7 +15,6 @@ ALLOWED_HOSTS = []
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
-SETTINGS_PATH = os.path.dirname(os.path.dirname('index.html'))
 
 INSTALLED_APPS = [
     'django.contrib.admin',
